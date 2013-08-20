@@ -57,4 +57,7 @@ group :development, :test do
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'railroady'  # testing based on book suggestion in Fig 9.4
+  gem 'ZenTest'
+  gem 'launchy'
 end
