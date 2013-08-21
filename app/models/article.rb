@@ -416,6 +416,33 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with(other_article_id)
+    #by default use ID of self as first article; merge from other_article to first article
+    #set article 1 and 2 values for clarity
+    @article1=self
+    @article2=Article.find_by_id(other_article_id)
+    
+    #if author 1 is nil set eql to author 2
+    if @article1.author.nil?
+      @article1.author=@article2.author
+    end
+    
+    #append body and extended fields from 2 to 1
+    @article1.body=[@article1.body,"\n",@article2.body].join
+    @article1.extended=[@article1.extended,"\n",@article2.extended].join
+    
+    #establish count of combined comments as comparison before delete
+    comment_count=Comment.where(:article_id => [@article1.id, @article2.id]).count
+    # reset article 2 comments to article 1
+    Comment.where(:article_id => @article2.id).map! do |each_comment|
+      each_comment.article_id=@article1.id
+    end
+    #save article 1, then delete article 2
+    @article1.save
+    @article2.destroy
+    return @article1.id
+  end
+#################################  
   protected
 
   def set_published_at
@@ -466,4 +493,5 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+  
 end

@@ -4,3 +4,6 @@
   <%= render :partial => "form" %>
 
 <% end %>
+
+<%= render(:partial => "merge_with") unless @article.nil? %>
+

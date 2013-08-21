@@ -630,5 +630,51 @@ describe Article do
     end
 
   end
+  
+  describe 'merge_with(other_article_id)' do
+    before :each do
+      @main_article_id=1
+      @second_article_id=2
+      @bloggy=Factory(:blog)
+      @article1=Factory(:article, :id => @main_article_id, :title => 'first article')
+      @article2=Factory(:article, :id => @second_article_id, :title => 'second article')
+      @comment1=Factory(:comment, :article_id => @article1.id)
+      @comment2=Factory(:comment, :article_id => @article2.id)
+    end
+    it 'receives a valid id representing a valid article' do
+      Article.find_by_id(@main_article_id).should eql(@article1)
+      Article.find_by_id(@second_article_id).should eql(@article2)
+    end
+    it 'ensures a single author specified in merged article' do
+      @article1.author=nil
+      #@article2.author"Bob"
+      merged_id=@article1.merge_with(@second_article_id)
+      Article.find_by_id(merged_id).should_not be_nil
+    end
+    it 'ensures the title from 1st article used' do
+      merged_id=@article1.merge_with(@second_article_id)
+      Article.find_by_id(merged_id).title.should eql(@article1.title)
+    end
+    it 'takes text from 2nd article and appends to 1st article' do
+      merged_body_text=[@article1.body,"\n",@article2.body].join
+      merged_extended_text=[@article1.extended,"\n",@article2.extended].join
+      merged_id=@article1.merge_with(@second_article_id)
+      Article.find_by_id(merged_id).body.should eql(merged_body_text)
+      Article.find_by_id(merged_id).extended.should eql(merged_extended_text)
+    end
+    it 'reassigns comments to 1st article' do
+      comment_count=Comment.where(:article_id => [@article1.id, @article2.id]).count
+      merged_id=@article1.merge_with(@second_article_id)
+      Comment.where(:article_id => merged_id).count.should eql(comment_count)
+    end
+    it 'deletes the 2nd article' do
+      merged_id=@article1.merge_with(@second_article_id)
+      Article.find_by_id(@second_article_id).should be_nil
+    end
+    it 'returns success to controller with merged article id' do
+      merged_id=@article1.merge_with(@second_article_id)
+    end
+  end
+  
 end
 
