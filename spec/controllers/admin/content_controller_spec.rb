@@ -683,10 +683,12 @@ describe Admin::ContentController do
         @comment1=Factory(:comment, :article => @article1)
         @comment2=Factory(:comment, :article => @article2)
         @merge_id=@article2.id
-        post :merge_articles, {:id => @article1.id, :merge_with => @merge_id}
+        post :merge_articles, {:id => 1, :merge_with => 2}
       end
 #      it 'should call the article model method to merge two articles' do
-#        @article1.should_receive(:merge_with).with("2").and_return("1")
+#        debugger
+#        @article1.should_receive(:merge_with).with("2")
+#  should post go here
 #      end        
       it 'should receive success indicator from article model method' do
         
