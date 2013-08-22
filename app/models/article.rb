@@ -435,13 +435,13 @@ class Article < Content
     comment_count=Comment.where(:article_id => [@article1.id, @article2.id]).count
     # reset article 2 comments to article 1
     @article1.comments += @article2.comments
-    debugger
+    @article2 = Article.find(@article2.id)
 #    Comment.where(:article_id => @article2.id).map! do |each_comment|
 #      each_comment.article_id=@article1.id
 #    end
 #    Article.find_by_id(other_article_id).allow_comments = false
     #save article 1, then delete article 2
-    @article1.save
+    @article1.save!
     @article2.destroy
     return @article1.id
   end
