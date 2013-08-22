@@ -683,7 +683,7 @@ describe Admin::ContentController do
         @comment1=Factory(:comment, :article => @article1)
         @comment2=Factory(:comment, :article => @article2)
         @merge_id=@article2.id
-        post :merge_articles, {:id => 1, :merge_with => 2}
+        post :merge_articles, {:id => @article1.id, :merge_with => @article2.id}
       end
 #      it 'should call the article model method to merge two articles' do
 #        debugger

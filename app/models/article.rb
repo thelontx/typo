@@ -437,7 +437,7 @@ class Article < Content
     Comment.where(:article_id => @article2.id).map! do |each_comment|
       each_comment.article_id=@article1.id
     end
-    Article.find_by_id(other_article_id).allow_comments = false
+#    Article.find_by_id(other_article_id).allow_comments = false
     #save article 1, then delete article 2
     @article1.save
     @article2.destroy
