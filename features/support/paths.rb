@@ -25,6 +25,8 @@ module NavigationHelpers
     when /^the edit categories page for "(.*)"$/
       category_id=Category.find_by_title($1).id
       "/admin/categories/edit/#{category_id}"
+    when /^the dashboard page$/
+      '/admin'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
