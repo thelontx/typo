@@ -8,3 +8,4 @@ Given /the following articles exist/ do |articles_table|
   end
 end
 
+
